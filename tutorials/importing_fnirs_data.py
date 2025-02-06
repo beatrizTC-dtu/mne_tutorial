@@ -12,7 +12,9 @@ import os.path as op
 
 # Standardized data: SNIRF (.snirf) -> Shared NIR Format
 # Facilitate sharing and analysis of fNIRS data (NIRx manufacturer) mne.io.read_raw_nirx()
-fnirs_data_folder = (r'C:\Users\bede\OneDrive - Danmarks Tekniske Universitet\Desktop\Data\Test-retest study\Subject01-visit01')
+#fnirs_data_folder = (r'C:\Users\bede\OneDrive - Danmarks Tekniske Universitet\Desktop\Data\Test-retest study\Subject01-visit01')
+fnirs_data_folder = r'C:\Users\bede\OneDrive - Danmarks Tekniske Universitet\fNIRS - PhD Project\Data\Test-retest study'
+# Loop over subjectID and visitID
 fnirs_data_header_file = os.path.join(fnirs_data_folder, 'NIRS-2022-10-19_001.hdr')
 raw_intensity = mne.io.read_raw_nirx(fnirs_data_header_file)
 raw_intensity.load_data()
@@ -92,3 +94,9 @@ raw_od.info["bads"] = list(compress(raw_od.ch_names, sci < 0.5)) # does it matte
 # Motion artifact correction methods
 # Temporal derivative distribution repair (tddr) - robust regression, which
 # effectively removes baseline shift and spike artifacts without the need for any user-supplied parameters.
+corrected_tddr = mne.preprocessing.nirs.temporal_derivative_distribution_repair(raw_od)
+# plot corrected
+# Converting from optical density to haemoglobin
+raw_haemo = mne.preprocessing.nirs.beer_lambert_law(corrected_tddr, ppf=6.1)
+raw_haemo.plot(n_channels=len(raw_haemo.ch_names),
+                duration=500, show_scrollbars=False,show=False)
