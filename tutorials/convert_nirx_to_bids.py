@@ -4,12 +4,12 @@ from collections import Counter
 from glob import glob
 import mne
 from mne_nirs.io.snirf import write_raw_snirf
-from mne_bids import write_raw_bids, BIDSPath
+from mne_bids import write_raw_bids, BIDSPath, read_raw_bids
 import numpy as np
 
 
 ### REFACTOR SOURCE DATA DIRECTORY ###
-# Source data should be organized like such
+# Source data should be organized like such to be able to convert to BIDS
 #sub-01/
 #    ses-01/
 #        nirs/
@@ -102,6 +102,7 @@ def find_subfolder_with_data(sub_dir):
     d_name = str(sub_dir.directory)
     return d_name + "/" + next(os.walk(d_name))[1][0]
 
+### CONVERT NIRX TO BIDS ###
 
 # Loop over each participant "XX"
 for sub in subjects:
@@ -138,8 +139,31 @@ for sub in subjects:
                         'Xend'   :5}
 
         # Now we write the correctly formatted files to the base directory (not back in to source data)
-        bids_path = dataset.copy().update(root=r"C:\Datasets\Test-retest refactor\bids_dataset")
+        bids_path = dataset.copy().update(root=r"C:\Datasets\Test-retest study\bids_dataset") # where you will store the bids dataset
         write_raw_bids(raw, bids_path, event_id=trigger_code, overwrite=True)
 
         print("  Cleaning up temporary files\n")
         os.remove(snirf_path)
+
+
+### VALIDATE BIDS CONVERSION ###
+
+def load_data(bids_path):
+
+    raw_intensity = read_raw_bids(bids_path=bids_path, verbose=False)
+    raw_intensity.load_data()
+    return 1
+
+
+for sub in subjects:
+    for ses in sessions:
+        # Create path to file based on experiment info
+        bids_path = BIDSPath(subject=sub,
+                             session=ses,
+                             task="auditory",
+                             root=r"C:\Datasets\Test-retest study\bids_dataset",
+                             datatype="nirs",
+                             suffix="nirs",
+                             extension=".snirf")
+
+        assert load_data(bids_path)
