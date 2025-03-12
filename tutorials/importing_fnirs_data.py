@@ -13,9 +13,9 @@ import os.path as op
 # Standardized data: SNIRF (.snirf) -> Shared NIR Format
 # Facilitate sharing and analysis of fNIRS data (NIRx manufacturer) mne.io.read_raw_nirx()
 #fnirs_data_folder = (r'C:\Users\bede\OneDrive - Danmarks Tekniske Universitet\Desktop\Data\Test-retest study\Subject01-visit01')
-fnirs_data_folder = r'C:\Users\bede\OneDrive - Danmarks Tekniske Universitet\fNIRS - PhD Project\Data\Test-retest study'
+fnirs_data_folder = r"C:\Datasets\Test-retest refactor\bids_dataset"
 # Loop over subjectID and visitID
-fnirs_data_header_file = os.path.join(fnirs_data_folder, 'NIRS-2022-10-19_001.hdr')
+fnirs_data_file = os.path.join(fnirs_data_folder, 'NIRS-2022-10-19_001.hdr')
 raw_intensity = mne.io.read_raw_nirx(fnirs_data_header_file)
 raw_intensity.load_data()
 

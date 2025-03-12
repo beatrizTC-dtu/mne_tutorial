@@ -154,7 +154,6 @@ def load_data(bids_path):
     raw_intensity.load_data()
     return 1
 
-
 for sub in subjects:
     for ses in sessions:
         # Create path to file based on experiment info
@@ -166,4 +165,5 @@ for sub in subjects:
                              suffix="nirs",
                              extension=".snirf")
 
-        assert load_data(bids_path)
+        #assert load_data(bids_path)
+        load_data(bids_path)
