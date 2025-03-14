@@ -14,6 +14,7 @@ from mne.preprocessing.nirs import (optical_density,
                                     temporal_derivative_distribution_repair)
 from nilearn.plotting import plot_design_matrix
 import numpy as np
+import pandas as pd
 
 root = r'C:\Datasets\Test-retest study\bids_dataset'  # Replace with the path to your data
 task = "auditory"        # Set to whatever the name of your experiment is
@@ -108,6 +109,7 @@ dists = mne.preprocessing.nirs.source_detector_distances(
 # Preprocessing the data to get od and haemo information
 raw_od = mne.preprocessing.nirs.optical_density(raw_intensity)
 raw_haemo = mne.preprocessing.nirs.beer_lambert_law(raw_od, ppf=6)
+
 
 # Extracting short and long channels
 short_chs = mne_nirs.channels.get_short_channels(raw_haemo) # 8 short channels 13 -> 20
