@@ -63,8 +63,8 @@ stimulus_duration = {'Control': 5, 'Noise': 5, 'Speech': 5.25}
 trigger_info = {'1.0': 'Control',
                 '2.0': 'Noise',
                 '3.0': 'Speech',
-                '4.0': 'Xstart',
-                '5.0': 'Xend'}
+                '4.0': 'XStop_break',
+                '5.0': 'XStart_break'}
 
 # Extract information from organized folders containing raw source data
 subject_dirs = glob(os.path.join(root, "sub-*"))
@@ -132,11 +132,11 @@ for sub in subjects:
 
         #raw.info['line_freq'] = 50  # Hangover from EEG
 
-        trigger_code = {'Control':1,
-                        'Noise'  :2,
-                        'Speech' :3,
-                        'Xstart' :4,
-                        'Xend'   :5}
+        trigger_code = {'Control'     :1,
+                        'Noise'       :2,
+                        'Speech'      :3,
+                        'XStop_break' :4,
+                        'XStart_break':5}
 
         # Now we write the correctly formatted files to the base directory (not back in to source data)
         bids_path = dataset.copy().update(root=r"C:\Datasets\Test-retest study\bids_dataset") # where you will store the bids dataset
